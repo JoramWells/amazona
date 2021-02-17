@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ProductList from "./ProductList";
 import TrendingProducts from "./TrendingProducts";
 import Wearables from "./Wearables";
+import ReactLeaf from "./ReactLeaf";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,21 +20,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HomepageRoutes() {
+export default function HomepageRoutes(props) {
+
   const classes = useStyles();
   return (
     <>
       <Paper className={classes.paper} elevation={0}>
         <Grid spacing={2}>
-          <Container1 />
-          <OtherProducts2 />
           <Wearables />
           <ProductList />
-          <TrendingProducts />
-          <ClothingList />
-          <OtherProducts />
         </Grid>
       </Paper>
+
     </>
   );
 }

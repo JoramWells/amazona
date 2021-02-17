@@ -15,6 +15,7 @@ import ProductDetails from "./components/ProductDetails";
 import HomepageRoutes from "./components/HomepageRoutes";
 import CartScreen from "./components/CartScreen";
 import SignIn from "./components/SignIn"
+import Register from "./components/Register";
 function App() {
   return (
     <>
@@ -23,6 +24,7 @@ function App() {
       <Router>
         <Route path="/" exact component={HomepageRoutes} />
         <Route path="/signin" component={SignIn} />
+        <Route path="/register" component={Register} />
 
         <Route path="/product-detail/:id" component={ProductDetails} />
         <Route path="/cart/:id?" component={CartScreen} />

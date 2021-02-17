@@ -1,16 +1,20 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginTop:"15px",
   },
-  paper: {
-    padding: theme.spacing(2),
+  typography: {
+    padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    backgroundColor:"#ebebe0",
+    fontSize:"20px",
+    borderRadius:"5px",
   },
 }));
 
@@ -19,9 +23,11 @@ function Wearables() {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container>
         <Grid item xs={12}>
-          <Paper style={{backgroundColor:"#ebebe0", fontSize:"20px"}}  elevation={0} className={classes.paper}> <b>Jewellaries</b> </Paper>
+          <Typography className={classes.typography}>
+            <b>Jewellaries</b>
+          </Typography>
         </Grid>
       </Grid>
     </div>

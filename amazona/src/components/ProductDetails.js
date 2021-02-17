@@ -151,42 +151,7 @@ export default function ProductDetails(props) {
             </Grid>
           </Grid>
 
-          <Grid container spacing={3}>
-            {displayItems.displayItems.map((item) => (
-              <Grid
-                key={displayItems.displayItems._id}
-                style={{ textAlign: "center" }}
-                item
-                xs={3}
-              >
-                <Link path="/product-list">
-                  <Card variant="outlined" className={classes.root}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        alt={item.title}
-                        height="140"
-                        image={item.imgPath}
-                        title="Contemplative Reptile"
-                      />
-                      <CardContent>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {item.title}
-                        </Typography>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          $8.00
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
+          
         </div>
       )}
     </div>

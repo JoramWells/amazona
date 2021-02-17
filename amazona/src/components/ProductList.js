@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { listProduct } from "../actions/productActions";
 import {Rating, Skeleton} from "@material-ui/lab";
+import Carousel from 'react-elastic-carousel'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,9 +24,18 @@ const useStyles = makeStyles((theme) => ({
     textDecorationLine: "none",
   },
 }));
+const breakPoints = [
+  { width: 1, itemsToShow: 1 },
+  { width: 550, itemsToShow: 3, itemsToScroll: 3, pagination: false },
+  { width: 850, itemsToShow: 4 },
+  { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
+  { width: 1450, itemsToShow: 5 },
+  { width: 1750, itemsToShow: 6 },
+]
 
 function ProductLists(props) {
   const classes = useStyles();
+
 
   const ProductList = useSelector((state) => state.productList);
   const { products, loading, error } = ProductList;
@@ -78,57 +88,59 @@ function ProductLists(props) {
       ) : error ? (
         <div>{error}</div>
       ) : (
+
         <Paper className={classes.paper} elevation={0}>
-          <Grid container spacing={3} style={{ alignItems: "center" }}>
-            {products.map((item) => (
+          <Carousel itemsToShow={4} breakPoints={breakPoints}  enableAutoPlay autoPlaySpeed={2500}>
+            {products.map((item) =>(
+              <Link
+                to={"/product-detail/" + item._id}
+                className={classes.link}
+              >
+                <Card className={classes.root}>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      alt={item.title}
+                      height="140"
+                      image={item.imgPath}
+                      title="Contemplative Reptile"
+                    />
 
-              <Grid key={item._id} style={{ textAlign: "center" }} item xs={2}>
-                <Link
-                  to={"/product-detail/" + item._id}
-                  className={classes.link}
-                >
-                  <Card className={classes.root}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        alt={item.title}
-                        height="140"
-                        image={item.imgPath}
-                        title="Contemplative Reptile"
-                      />
+                    <CardContent>
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        {item.shop}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {item.title}
+                      </Typography>
+                      <Box
+                        component="fieldset"
+                        mb={0}
+                        borderColor="transparent"
+                      >
+                        <Rating name="read-only" value={item.rating} />
+                        <Typography>
+                          <b>$ {item.price}</b>
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Link>
+            
 
-                      <CardContent>
-                        <Typography
-                          variant="body2"
-                          color="textPrimary"
-                          component="p"
-                        >
-                          {item.shop}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {item.title}
-                        </Typography>
-                        <Box
-                          component="fieldset"
-                          mb={0}
-                          borderColor="transparent"
-                        >
-                          <Rating name="read-only" value={item.rating} />
-                          <Typography>
-                            <b>$ {item.price}</b>
-                          </Typography>
-                        </Box>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Link>
-              </Grid>
             ))}
-          </Grid>
+          
+          </Carousel>
+
         </Paper>
       )}
     </div>
