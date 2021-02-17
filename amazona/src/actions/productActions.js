@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import { PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_REQUEST } from "../constants/productConstants"
+import { PRODUCT_SAVE_FAIL,PRODUCT_SAVE_SUCCESS,PRODUCT_SAVE_REQUEST,PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_REQUEST } from "../constants/productConstants"
 
 
 const listProduct = () => async(dispatch) =>{
@@ -22,6 +22,25 @@ const listProduct = () => async(dispatch) =>{
     }
 }
 
+
+const saveProduct = (product) => async(dispatch, getState) =>{
+    try {
+        dispatch({type:PRODUCT_SAVE_REQUEST, payload:product})
+        const {userSignin:{userInfo}} = getState();
+        const {data} = await axios.post('/api/products', product,{
+            headers: {
+                'Authorization' : 'Bearer' + userInfo.token
+            }
+        });
+        dispatch({type:PRODUCT_SAVE_SUCCESS, payload:data})
+        
+    } catch (error) {
+        dispatch({type:PRODUCT_SAVE_FAIL, payload:error.message})
+        
+    }
+}
+
+
 const detailsProduct = (productId) => async (dispatch) =>{
     try {
         dispatch({type:PRODUCT_DETAILS_REQUEST, payload:productId})
@@ -34,4 +53,4 @@ const detailsProduct = (productId) => async (dispatch) =>{
     }
 }
 
-export {listProduct, detailsProduct}
+export {listProduct, detailsProduct, saveProduct}

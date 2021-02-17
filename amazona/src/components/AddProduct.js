@@ -6,14 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useDispatch, useSelector} from 'react-redux'
-import { register } from '../actions/userActions';
+import { saveProduct, listProduct } from '../actions/productActions';
 
 function Copyright() {
   return (
@@ -52,26 +51,56 @@ export default function AddProduct(props) {
   const classes = useStyles();
   const[name,setName] = useState('')
   const[price,setPrice] = useState('')
+  const[image,setImage] = useState('')
+  const[brand,setBrand] = useState('')
+  const[category,setCategory] = useState('')
+  const[countInStock,setCountInStock] = useState('')
+  const[description,setDescription] = useState('')
+  const productList = useSelector(state => state.productList)
+  const{loading, products,error} = productList;
   const productSave = useSelector(state=>state.productSave);
-  const{loading, userInfo, error} = productSave;
+  const{loading:loadingSave, success:successSave,error:errorSave} = productSave;
 
   const dispatch = useDispatch();
 
   useEffect(() =>{
-    if(userInfo){
-      props.history.push("/")
-    }
+      dispatch(listProduct())
+//
     return() =>{
 
     }
-  }, [userInfo])
+  }, [])
 
   const submitHandler = (e) =>{
     e.preventDefault();
-    dispatch(register(name,email,password))
+    dispatch(saveProduct({name,price, image, brand, category, countInStock, description}))
   }
 
-  return (
+  return (loading? <div>Loading...</div>:
+     error? <div>{error}</div>: 
+     <> 
+    <div style={{marginTop:"100px"}}>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {products.map(product =>(
+                                    <tr>
+                                    <td>{product.name}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.countInStock}</td>
+                                </tr>
+                ))}
+
+
+            </tbody>
+        </table>
+    </div>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -79,33 +108,74 @@ export default function AddProduct(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+         Add Product
         </Typography>
         <form className={classes.form} noValidate onSubmit={submitHandler}>
-        {loading && <div>Loading...</div>}
-        {error && <div>{error}</div>}
+        {loadingSave && <div>Loading...</div>}
+        {errorSave && <div>{errorSave}</div>}
         <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="name"
-            label="name "
+            label="Name "
+            type="text"
             name="name"
             autoComplete="name"
             onChange={(e) => setName(e.target.value)}
             autoFocus
           />
-          <TextField
+            <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)}
+            id="price"
+            label="Price "
+            name="price"
+            type="text"
+            autoComplete="price"
+            onChange={(e) => setPrice(e.target.value)}
+            autoFocus
+          />
+            <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="brand"
+            label="brand "
+            name="brand"
+            type="text"
+            autoComplete="brand"
+            onChange={(e) => setBrand(e.target.value)}
+            autoFocus
+          />
+            <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="category"
+            type="text"
+            label="category "
+            name="category"
+            autoComplete="category"
+            onChange={(e) => setCategory(e.target.value)}
+            autoFocus
+          />
+            <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="countInStock"
+            type="text"
+            label="In Stock"
+            name="countInStock"
+            autoComplete="countInStock"
+            onChange={(e) => setCountInStock(e.target.value)}
             autoFocus
           />
           <TextField
@@ -113,26 +183,15 @@ export default function AddProduct(props) {
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            onChange={(e) =>setPassword(e.target.value)}
+            name="description"
+            label="Product Description"
+            type="text"
+            id="description"
+            onChange={(e) =>setDescription(e.target.value)}
             autoComplete="current-password"
           />
 
-        <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="reRassword"
-            label="Confirm Password"
-            type="password"
-            id="reRassword"
-            onChange={(e) =>setRePassword(e.target.value)}
-            autoComplete="current-password"
-          />
+
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -144,25 +203,15 @@ export default function AddProduct(props) {
             color="primary"
             className={classes.submit}
           >
-            Register
+            Save
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Already have an account?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to="/signin" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+
         </form>
       </div>
       <Box mt={8}>
         <Copyright />
       </Box>
     </Container>
+    </>
   );
 }

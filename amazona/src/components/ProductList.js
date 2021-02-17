@@ -102,7 +102,7 @@ function ProductLists(props) {
                       component="img"
                       alt={item.title}
                       height="140"
-                      image={item.imgPath}
+                      image={item.image}
                       title="Contemplative Reptile"
                     />
 

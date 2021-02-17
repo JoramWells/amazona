@@ -32,8 +32,7 @@ export default function ProductDetails(props) {
     (x) => x._id === props.match.params.id
   );
  */
-  const[currentPage, setCurrentPage] = useState(1)
-  const [postsPerPage, setpostsPerPage] = useState(10)
+
   const [qty, setQty] = useState(1);
   const productDetail = useSelector((state) => state.productDetail);
   const { product, loading, error } = productDetail;
